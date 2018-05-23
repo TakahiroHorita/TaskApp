@@ -14,10 +14,23 @@
     tools:showIn="@layout/activity_input">
 
     <EditText
+        android:id="@+id/category_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:hint="カテゴリ" />
+
+    <EditText
         android:id="@+id/title_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
         android:hint="タイトル" />
+
     <EditText
         android:id="@+id/content_edit_text"
         android:layout_width="match_parent"
