@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import io.realm.Realm;
@@ -29,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     };
     private ListView mListView;
     private TaskAdapter mTaskAdapter;
+    private Button mSerachButton;
+    private Button mCancelButton;
+    private EditText mEdittext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,34 @@ public class MainActivity extends AppCompatActivity {
         // ListViewの設定
         mTaskAdapter = new TaskAdapter(MainActivity.this);
         mListView = (ListView) findViewById(R.id.listView1);
+
+        //検索用ボタン、キャンセルボタン、エディットテキスト
+        mSerachButton = findViewById(R.id.searchbutton);
+        mEdittext = findViewById(R.id.editText);
+        mCancelButton = findViewById(R.id.canselbutton);
+
+        mSerachButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String search = mEdittext.getText().toString();
+                RealmResults<Task> results = mRealm.where(Task.class).equalTo("category", search).findAll();
+
+                mTaskAdapter.setTaskList(mRealm.copyFromRealm(results));
+                // TaskのListView用のアダプタに渡す
+                mListView.setAdapter(mTaskAdapter);
+                // 表示を更新するために、アダプターにデータが変更されたことを知らせる
+                mTaskAdapter.notifyDataSetChanged();
+            }
+
+        });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reloadListView();
+            }
+        });
+
 
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
